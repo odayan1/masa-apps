@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Masa｜英検2級 × AI学習アプリ</title>
-<meta name="description" content="「英検2級、何を勉強すればいいか分からない」を解決するAI学習アプリ。弱点を診断→次の一手→コピペで使える学習プロンプト付き。">
+<title>Masa の学習アプリ（試作品）｜中学生・高校生</title>
+<meta name="description" content="現役の塾講師が、生徒のつまずきから逆算して作った学習アプリの試作品集。中学生・高校生向けに無料で公開中。">
 <style>
   :root{
     --mizu:#2fbdea; --midori:#8dc63f; --ki:#f7d000;
@@ -18,55 +18,61 @@
   }
   .wrap{max-width:640px; margin:0 auto; padding:0 20px 64px}
   header{
-    text-align:center; padding:44px 20px 32px;
+    text-align:center; padding:40px 20px 28px;
     background:linear-gradient(160deg,#e8f8ff 0%,#f6fbfe 100%);
     border-bottom:1px solid var(--line);
   }
   .badge{
     display:inline-block; font-size:12px; font-weight:700; letter-spacing:.08em;
     color:#fff; background:var(--mizu); padding:5px 14px; border-radius:999px;
-    margin-bottom:16px;
+    margin-bottom:14px;
   }
-  h1{font-size:26px; font-weight:800; letter-spacing:.01em}
+  h1{font-size:25px; font-weight:800; letter-spacing:.01em}
   h1 .accent{color:var(--mizu)}
-  .lead{margin-top:12px; font-size:15px; color:var(--sub); font-weight:600}
-  .concept{
-    max-width:640px; margin:26px auto 0; padding:0 20px;
+  .lead{margin-top:10px; font-size:14px; color:var(--sub); font-weight:600}
+  .note{
+    max-width:600px; margin:18px auto 0; font-size:12.5px; color:#7a5d00;
+    background:#fffbe6; border:1px solid #f5e08a; border-radius:12px; padding:10px 14px; text-align:left;
   }
-  .concept-card{
-    background:#fff; border:1px solid var(--line); border-radius:16px;
-    padding:20px 20px; box-shadow:0 6px 20px rgba(47,189,234,.06);
+
+  /* タブ */
+  .tabs{
+    position:sticky; top:0; z-index:10; background:rgba(246,251,254,.95);
+    backdrop-filter:blur(6px); border-bottom:1px solid var(--line);
   }
-  .concept-card h2{font-size:15px; margin-bottom:12px}
-  .flow{display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:13px; font-weight:700}
-  .step{background:#eefaf0; color:#4c8a1e; padding:6px 12px; border-radius:10px}
-  .arrow{color:var(--mizu); font-weight:800}
-  section{margin-top:34px}
-  .sec-title{font-size:13px; font-weight:800; color:var(--sub); letter-spacing:.06em; margin-bottom:14px; padding-left:2px}
+  .tabs-inner{max-width:640px; margin:0 auto; display:flex; gap:8px; padding:12px 20px}
+  .tab{
+    flex:1; font:inherit; font-size:16px; font-weight:800; cursor:pointer;
+    padding:12px 8px; border-radius:14px; border:2px solid var(--line);
+    background:#fff; color:var(--sub); transition:all .12s ease;
+  }
+  .tab .cnt{font-size:12px; font-weight:700; opacity:.8; margin-left:4px}
+  .tab[aria-selected="true"]{background:var(--mizu); border-color:var(--mizu); color:#fff; box-shadow:0 6px 16px rgba(47,189,234,.25)}
+  .tab.kou[aria-selected="true"]{background:#3a8f2a; border-color:#3a8f2a; box-shadow:0 6px 16px rgba(76,138,30,.25)}
+  .panel[hidden]{display:none}
+
+  section{margin-top:28px}
+  .sec-title{font-size:13px; font-weight:800; color:var(--sub); letter-spacing:.06em; margin-bottom:12px; padding-left:2px}
   .app{
     display:block; text-decoration:none; color:inherit;
     background:#fff; border:1px solid var(--line); border-radius:16px;
-    padding:18px 18px; margin-bottom:14px;
+    padding:16px 18px; margin-bottom:12px;
     box-shadow:0 4px 14px rgba(31,45,58,.04);
     transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
   }
   .app:hover{transform:translateY(-2px); box-shadow:0 10px 26px rgba(47,189,234,.14); border-color:var(--mizu)}
-  .app-top{display:flex; align-items:center; gap:10px; margin-bottom:6px}
+  .app-top{display:flex; align-items:center; gap:6px; margin-bottom:4px; flex-wrap:wrap}
   .tag{font-size:11px; font-weight:800; padding:3px 9px; border-radius:8px}
   .tag.math{background:#eefaf0; color:#4c8a1e}
   .tag.eng{background:#e8f4fd; color:#1f6fa8}
-  .tag.tool{background:#f0ecfb; color:#6a4fb0}
+  .tag.sci{background:#e9f7f5; color:#16806f}
+  .tag.soc{background:#fdeee8; color:#b0532a}
   .tag.grade{background:#fff7d6; color:#8a6d00}
-  .app-name{font-size:17px; font-weight:800}
-  .app-desc{font-size:13px; color:var(--sub); margin-top:4px}
-  .app-cta{display:inline-block; margin-top:10px; font-size:13px; font-weight:800; color:var(--mizu)}
-  .soon{
-    background:linear-gradient(160deg,#fffdf2,#fff);
-    border:1px dashed var(--ki); border-radius:16px; padding:18px;
-  }
-  .soon .app-top .tag{background:#fff7d6; color:#8a6d00}
-  .soon .app-name{color:var(--ink)}
-  .soon .app-desc{margin-top:6px}
+  .tag.beta{background:#f0ecfb; color:#6a4fb0}
+  .app-name{font-size:16.5px; font-weight:800}
+  .app-desc{font-size:13px; color:var(--sub); margin-top:3px}
+  .app-cta{display:inline-block; margin-top:8px; font-size:13px; font-weight:800; color:var(--mizu)}
+
   .footer{
     margin-top:40px; text-align:center; font-size:13px; color:var(--sub);
     border-top:1px solid var(--line); padding-top:26px;
@@ -77,94 +83,181 @@
     padding:12px 22px; border-radius:999px; margin-bottom:16px;
   }
   .kate{font-size:12px; color:var(--sub); line-height:1.8}
-  .kate a{color:var(--mizu); font-weight:700; text-decoration:none}
 </style>
 </head>
 <body>
   <header>
-    <span class="badge">英検2級 × AI学習アプリ</span>
-    <h1>「何を勉強すればいい？」を<br><span class="accent">解決する</span>学習アプリ</h1>
-    <p class="lead">現役の塾講師が、つまずくポイントから逆算して作っています📱</p>
+    <span class="badge">学習アプリ 試作品コーナー</span>
+    <h1>つまずきから逆算した<br><span class="accent">学習アプリ</span>集</h1>
+    <p class="lead">現役の塾講師が、生徒のつまずくポイントから作っています📱<br>どれも無料・インストール不要。タップするだけで始められます。</p>
+    <p class="note">🧪 ここにあるのは<b>試作品</b>です。みんなで試して、感想を聞かせてください。使ってもらった声をもとに、どんどん改良していきます。</p>
   </header>
 
-  <div class="concept">
-    <div class="concept-card">
-      <h2>🤖 このアプリの考え方</h2>
-      <div class="flow">
-        <span class="step">① 弱点を診断</span>
-        <span class="arrow">→</span>
-        <span class="step">② 次の一手を提示</span>
-        <span class="arrow">→</span>
-        <span class="step">③ コピペで使える学習プロンプト</span>
-      </div>
-      <p class="app-desc" style="margin-top:12px">「今の自分に何が足りないか」「次に何をやればいいか」まで示すのが売りです。<b>第一弾として、英検2級リスニングの本番30問アプリを公開しました。</b>単語帳・リーディングも順次。</p>
+  <nav class="tabs" role="tablist" aria-label="学年で選ぶ">
+    <div class="tabs-inner">
+      <button class="tab chu" role="tab" id="tab-chu" aria-controls="panel-chu" aria-selected="true">🏫 中学生<span class="cnt"></span></button>
+      <button class="tab kou" role="tab" id="tab-kou" aria-controls="panel-kou" aria-selected="false">🎓 高校生<span class="cnt"></span></button>
     </div>
-  </div>
+  </nav>
 
   <div class="wrap">
-    <section>
-      <p class="sec-title">▍ 英検2級 リスニング（無料・本番30問）</p>
 
-      <a class="app" href="https://odayan1.github.io/eiken2-listening-2024r1/" target="_blank" rel="noopener">
-        <div class="app-top">
-          <span class="tag eng">英検2級</span>
-          <span class="tag grade">高1〜</span>
-        </div>
-        <div class="app-name">リスニングマスター｜2024年度 第1回</div>
-        <div class="app-desc">本番と同じ全30問（第1部 会話15問＋第2部 説明文15問）を、選択肢の先読み→1回再生→解答の<b>本番フロー</b>で演習。<br><b>いちばんの特長は「間違えた問題だけ、手厚く」</b>。正解はそのまま次へ、ミスした1問だけ〈キー単語の確認 → 1文ずつ聞き直し＆シャドーイング → ひっかけの正体を解説〉を<b>必ず通る設計</b>なので、読み飛ばしが起きません。第1部・第2部の「この1問だけ復習」もタップで選べます。</div>
-        <span class="app-cta">アプリを開く →</span>
-      </a>
+    <!-- ===================== 中学生 ===================== -->
+    <div class="panel" id="panel-chu" role="tabpanel" aria-labelledby="tab-chu">
 
-      <a class="app" href="https://odayan1.github.io/eiken2-listening-2024r2/" target="_blank" rel="noopener">
-        <div class="app-top">
-          <span class="tag eng">英検2級</span>
-          <span class="tag grade">高1〜</span>
-        </div>
-        <div class="app-name">リスニングマスター｜2024年度 第2回</div>
-        <div class="app-desc">第2回の出題形式をベースにしたオリジナル全30問。第1回をやり切ったら、<b>別の回でもう一度力試し</b>。本番同様の通し演習で、聞き取りのスタミナと正答率を仕上げます。</div>
-        <span class="app-cta">アプリを開く →</span>
-      </a>
-    </section>
+      <section>
+        <p class="sec-title">▍ 数学</p>
 
-    <section>
-      <p class="sec-title">▍ 数学アプリ（作品サンプル・無料）</p>
+        <a class="app" href="https://odayan1.github.io/kate-ichijikansuu/" target="_blank" rel="noopener">
+          <div class="app-top"><span class="tag math">数学</span><span class="tag grade">中2〜中3</span></div>
+          <div class="app-name">1次関数マスター</div>
+          <div class="app-desc">y＝ax＋b のスライダーでグラフが動く。よく出る6タイプの問題を自動生成で何度でも。タイマー付き。</div>
+          <span class="app-cta">アプリを開く →</span>
+        </a>
 
-      <a class="app" href="https://odayan1.github.io/kate-sankakuhi/" target="_blank" rel="noopener">
-        <div class="app-top">
-          <span class="tag math">数学</span>
-          <span class="tag grade">高1〜</span>
-        </div>
-        <div class="app-name">三角比マスター</div>
-        <div class="app-desc">単位円スライダーで sin・cos・tan が動く。学習タブ＋タイマー付き4択クイズで定着まで。</div>
-        <span class="app-cta">アプリを開く →</span>
-      </a>
+        <a class="app" href="https://odayan1.github.io/kate-niji3/" target="_blank" rel="noopener">
+          <div class="app-top"><span class="tag math">数学</span><span class="tag grade">中3</span></div>
+          <div class="app-name">2次方程式マスター（中3）</div>
+          <div class="app-desc">因数分解・平方根・解の公式の使い分けを、解き方の道順つきで練習。</div>
+          <span class="app-cta">アプリを開く →</span>
+        </a>
 
-      <a class="app" href="https://odayan1.github.io/ky-mogi-1-2/" target="_blank" rel="noopener">
-        <div class="app-top">
-          <span class="tag math">数学</span>
-          <span class="tag grade">中3〜</span>
-        </div>
-        <div class="app-name">教達検対策 数学 大問1・2（非公式）</div>
-        <div class="app-desc">数値入れかえ式で問題が無限に出る自動生成ドリル。4択→ステップ解説→答え。図も動かせます。</div>
-        <span class="app-cta">アプリを開く →</span>
-      </a>
-    </section>
+        <a class="app" href="https://odayan1.github.io/ky-mogi-1-2/" target="_blank" rel="noopener">
+          <div class="app-top"><span class="tag math">数学</span><span class="tag grade">中3</span></div>
+          <div class="app-name">教達検対策 数学 大問1・2（非公式）</div>
+          <div class="app-desc">数値入れかえ式で問題が無限に出る自動生成ドリル。4択→ステップ解説→答え。図も動かせます。</div>
+          <span class="app-cta">アプリを開く →</span>
+        </a>
+      </section>
 
-    <section>
-      <p class="sec-title">▍ 近日公開</p>
-      <div class="soon">
-        <div class="app-top">
-          <span class="tag">英検2級</span>
-        </div>
-        <div class="app-name">英検2級 リーディング（パラフレーズ／読解）</div>
-        <div class="app-desc">英検2級の得点の核心「言い換えの見抜き方」を、診断→次の一手→プロンプトのループで攻略。単語帳・過去問トレーナーも順次。<b>フォローで受け取ってください。</b></div>
-      </div>
-    </section>
+      <section>
+        <p class="sec-title">▍ 理科</p>
+
+        <a class="app" href="https://odayan1.github.io/kate-seibutsu1/" target="_blank" rel="noopener">
+          <div class="app-top"><span class="tag sci">理科</span><span class="tag grade">中3</span></div>
+          <div class="app-name">生物マスター①</div>
+          <div class="app-desc">生命の連続性（成長と殖え方・遺伝の規則性・進化）。50点→70点→90点のコース別に仕上げる。</div>
+          <span class="app-cta">アプリを開く →</span>
+        </a>
+
+        <a class="app" href="https://odayan1.github.io/kate-tenmon1/" target="_blank" rel="noopener">
+          <div class="app-top"><span class="tag sci">理科</span><span class="tag grade">中3</span></div>
+          <div class="app-name">天体マスター①</div>
+          <div class="app-desc">地球と宇宙（天体の1日・1年の動き、月や金星の見え方、太陽系）。南中高度や月の満ち欠けを動かして理解。</div>
+          <span class="app-cta">アプリを開く →</span>
+        </a>
+      </section>
+
+      <section>
+        <p class="sec-title">▍ 社会</p>
+
+        <a class="app" href="https://odayan1.github.io/kate-kindaishi/" target="_blank" rel="noopener">
+          <div class="app-top"><span class="tag soc">社会（歴史）</span><span class="tag grade">中2〜中3</span></div>
+          <div class="app-name">明治・大正 近代史マスター</div>
+          <div class="app-desc">高校入試に出る近代史を、流れ（なぜそうなった？）でつなげて覚える。</div>
+          <span class="app-cta">アプリを開く →</span>
+        </a>
+
+        <a class="app" href="https://odayan1.github.io/kate-koumin1/" target="_blank" rel="noopener">
+          <div class="app-top"><span class="tag soc">社会（公民）</span><span class="tag grade">中3</span></div>
+          <div class="app-name">公民マスター①</div>
+          <div class="app-desc">現代社会・日本国憲法・基本的人権・平和主義。用語と資料問題をまとめて確認。</div>
+          <span class="app-cta">アプリを開く →</span>
+        </a>
+      </section>
+    </div>
+
+    <!-- ===================== 高校生 ===================== -->
+    <div class="panel" id="panel-kou" role="tabpanel" aria-labelledby="tab-kou" hidden>
+
+      <section>
+        <p class="sec-title">▍ 数学</p>
+
+        <a class="app" href="https://odayan1.github.io/kate-sankakuhi/" target="_blank" rel="noopener">
+          <div class="app-top"><span class="tag math">数学Ⅰ</span><span class="tag grade">高1〜</span></div>
+          <div class="app-name">三角比マスター</div>
+          <div class="app-desc">単位円スライダーで sin・cos・tan が動く。学習タブ＋タイマー付き4択クイズで定着まで。</div>
+          <span class="app-cta">アプリを開く →</span>
+        </a>
+
+        <a class="app" href="https://odayan1.github.io/kate-nijihouteishiki/" target="_blank" rel="noopener">
+          <div class="app-top"><span class="tag math">数学Ⅰ</span><span class="tag grade">高1〜</span></div>
+          <div class="app-name">二次方程式マスター</div>
+          <div class="app-desc">高校範囲の二次方程式。判別式・解の公式まで、解き方の道順つきで練習。</div>
+          <span class="app-cta">アプリを開く →</span>
+        </a>
+      </section>
+
+      <section>
+        <p class="sec-title">▍ 英検2級 リスニング</p>
+
+        <a class="app" href="https://odayan1.github.io/eiken2-listening-2024r1/" target="_blank" rel="noopener">
+          <div class="app-top"><span class="tag eng">英検2級</span><span class="tag grade">高1〜</span></div>
+          <div class="app-name">リスニングマスター｜2024年度 第1回ベース</div>
+          <div class="app-desc">本番と同じ全30問を、先読み→1回再生→解答の本番フローで演習。<b>間違えた問題だけ手厚く</b>復習（キー単語→1文ずつ聞き直し→ひっかけ解説）。</div>
+          <span class="app-cta">アプリを開く →</span>
+        </a>
+
+        <a class="app" href="https://odayan1.github.io/eiken2-listening-2024r2/" target="_blank" rel="noopener">
+          <div class="app-top"><span class="tag eng">英検2級</span><span class="tag grade">高1〜</span></div>
+          <div class="app-name">リスニングマスター｜2024年度 第2回ベース</div>
+          <div class="app-desc">第1回をやり切ったら、別の回でもう一度力試し。聞き取りのスタミナと正答率を仕上げます。</div>
+          <span class="app-cta">アプリを開く →</span>
+        </a>
+
+        <a class="app" href="https://odayan1.github.io/eiken2-listening/" target="_blank" rel="noopener">
+          <div class="app-top"><span class="tag eng">英検2級</span><span class="tag grade">高1〜</span><span class="tag beta">試作版</span></div>
+          <div class="app-name">リスニングマスター（場面切り替え編）</div>
+          <div class="app-desc">会話の「場面が切り替わる瞬間」と、聞き逃しやすい重要単語に絞った短めの練習版。</div>
+          <span class="app-cta">アプリを開く →</span>
+        </a>
+      </section>
+
+      <section>
+        <p class="sec-title">▍ 英検 単語・ライティング</p>
+
+        <a class="app" href="https://odayan1.github.io/eiken2-vocab/" target="_blank" rel="noopener">
+          <div class="app-top"><span class="tag eng">英検2級</span><span class="tag grade">高1〜</span><span class="tag beta">試作版</span></div>
+          <div class="app-name">英検2級 単語マスター</div>
+          <div class="app-desc">実際に出題された単語で、意味→例文で使う、まで。音声つき。70%で合格、90%でS級合格。</div>
+          <span class="app-cta">アプリを開く →</span>
+        </a>
+
+        <a class="app" href="https://odayan1.github.io/eikenpre2-emailq/" target="_blank" rel="noopener">
+          <div class="app-top"><span class="tag eng">英検準2級</span><span class="tag grade">中3〜高2</span><span class="tag beta">試作版</span></div>
+          <div class="app-name">英検準2級 疑問文マスター</div>
+          <div class="app-desc">Eメール問題で必要な「質問を2つ書く」力を、レッスン→ドリル→自由作成で身につける。</div>
+          <span class="app-cta">アプリを開く →</span>
+        </a>
+      </section>
+    </div>
 
     <div class="footer">
       <a class="xbtn" href="https://x.com/odamasa_AI" target="_blank" rel="noopener">𝕏 @odamasa_AI をフォロー</a>
       <p class="kate">感想・要望は X の DM へ✨<br>山梨で学習塾「KATEぷら」もやっています。</p>
     </div>
   </div>
+
+<script>
+  // タブ切り替え（#chu / #kou でリンクを直接共有できる）
+  const tabs = { chu: document.getElementById('tab-chu'), kou: document.getElementById('tab-kou') };
+  const panels = { chu: document.getElementById('panel-chu'), kou: document.getElementById('panel-kou') };
+  for (const k in panels) {
+    tabs[k].querySelector('.cnt').textContent = '（' + panels[k].querySelectorAll('.app').length + '）';
+  }
+  function show(key, push) {
+    if (!panels[key]) key = 'chu';
+    for (const k in panels) {
+      const on = k === key;
+      panels[k].hidden = !on;
+      tabs[k].setAttribute('aria-selected', on ? 'true' : 'false');
+    }
+    if (push) history.replaceState(null, '', '#' + key);
+  }
+  tabs.chu.addEventListener('click', () => show('chu', true));
+  tabs.kou.addEventListener('click', () => show('kou', true));
+  show(location.hash.replace('#', ''), false);
+  window.addEventListener('hashchange', () => show(location.hash.replace('#', ''), false));
+</script>
 </body>
 </html>
